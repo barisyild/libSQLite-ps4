@@ -62,7 +62,4 @@ jobs:
         with:
           name: PS4-Binary
           path: |
-            *.elf
-            *.pkg
-            eboot.bin
-            pkgroot/IV0000-BREW00082_00-GRAPHICSEX000000.pkg
+            libSQLite.a
