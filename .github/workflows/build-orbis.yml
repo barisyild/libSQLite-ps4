@@ -17,7 +17,7 @@ jobs:
 
     # Define the toolchain path as an environment variable
     env:
-      OO_PS4_TOOLCHAIN: ${{ github.workspace }}/toolchain
+      OO_PS4_TOOLCHAIN: /opt/OpenOrbis/PS4Toolchain
 
     steps:
       - name: Checkout Repository
