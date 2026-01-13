@@ -1,0 +1,69 @@
+name: Orbis Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  SDK_VERSION: 0.0.1.487
+  SDK_PATH: /opt/OpenOrbis/PS4Toolchain
+
+jobs:
+  build-ps4:
+    runs-on: ubuntu-latest
+
+    # Define the toolchain path as an environment variable
+    env:
+      OO_PS4_TOOLCHAIN: ${{ github.workspace }}/toolchain
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld make git libelf-dev
+
+      - name: Setup OpenOrbis PS4 Toolchain
+        run: |
+          echo "Downloading Toolchain..."
+          wget https://github.com/illusion0001/OpenOrbis-PS4-Toolchain/releases/download/${{ env.SDK_VERSION }}/toolchain.tar.gz -O toolchain.tar.gz
+          
+          export OO_PS4_TOOLCHAIN=${{ env.SDK_PATH }}
+          
+          echo "Creating directory and extracting..."
+          tar -xzf toolchain.tar.gz -C /opt
+          
+          echo "Toolchain setup complete."
+      - name: Install LibSSL 1.1
+        run: |
+          sudo apt-get install -y software-properties-common
+          sudo apt-add-repository -y ppa:rael-gc/rvm
+          sudo apt-get install -y libssl-dev=1.1.1l-1ubuntu1.4 --allow-downgrades
+
+      - name: Debug
+        run: |
+          ls -la /opt
+          ls -la $OO_PS4_TOOLCHAIN
+          ls -la /opt/OpenOrbis/PS4Toolchain/include
+
+      - name: Build Project
+        run: |
+          make
+
+      - name: ls -la
+        run: ls -la
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PS4-Binary
+          path: |
+            *.elf
+            *.pkg
+            eboot.bin
+            pkgroot/IV0000-BREW00082_00-GRAPHICSEX000000.pkg
