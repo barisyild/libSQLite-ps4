@@ -69,6 +69,7 @@ $(BUILD):
 
 install: $(BUILD)
 	@echo Copying...
+	@cp -frv include/sqlite3.h $(OO_PS4_TOOLCHAIN)/include
 	@cp -frv $(TARGET).a $(OO_PS4_TOOLCHAIN)/lib
 	@echo lib installed!
 clean:
