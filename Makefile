@@ -35,7 +35,7 @@ INCLUDE		:=	include
 DATA		:=	data
 LIBS		:=	 
 
-CFLAGS      += --target=x86_64-pc-freebsd12-elf -fPIC -funwind-tables -c $(EXTRAFLAGS) -isysroot $(OO_PS4_TOOLCHAIN) -isystem $(OO_PS4_TOOLCHAIN)/include $(INCLUDES) -DNDEBUG -D_BSD_SOURCE -DSQLITE_ENABLE_MEMORY_MANAGEMENT -DSQLITE_OS_OTHER=1 -DSQLITE_OMIT_WAL
+CFLAGS      += --target=x86_64-pc-freebsd12-elf -fPIC -funwind-tables -c $(EXTRAFLAGS) -isysroot $(OO_PS4_TOOLCHAIN) -isystem $(OO_PS4_TOOLCHAIN)/include $(INCLUDES) -DNDEBUG -D_BSD_SOURCE
 CXXFLAGS    += $(CFLAGS) -isystem $(OO_PS4_TOOLCHAIN)/include/c++/v1
 
 ifneq ($(BUILD),$(notdir $(CURDIR)))
@@ -69,7 +69,6 @@ $(BUILD):
 
 install: $(BUILD)
 	@echo Copying...
-	@cp -frv include/sqlite3.h $(OO_PS4_TOOLCHAIN)/include
 	@cp -frv $(TARGET).a $(OO_PS4_TOOLCHAIN)/lib
 	@echo lib installed!
 clean:
